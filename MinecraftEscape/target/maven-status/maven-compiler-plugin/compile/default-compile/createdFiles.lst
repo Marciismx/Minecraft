@@ -1,2 +1,7 @@
+com\marc\mission\Mission.class
+com\marc\economy\EconomyCommand.class
+com\marc\economy\EconomyManager.class
 com\marc\EscapeCommand.class
+com\marc\mission\MissionCommand.class
+com\marc\mission\MissionManager.class
 com\marc\PlayerJoinListener.class

@@ -7,3 +7,7 @@ author: Marciismx
 commands:
   escape:
     description: Start the escape sequence.
+  economy:
+    description: Manage your in-game balance.
+  mission:
+    description: Manage your missions.
