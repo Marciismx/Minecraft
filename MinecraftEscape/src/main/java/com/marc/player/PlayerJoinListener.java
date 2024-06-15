@@ -1,4 +1,4 @@
-package com.marc;
+package com.marc.player;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

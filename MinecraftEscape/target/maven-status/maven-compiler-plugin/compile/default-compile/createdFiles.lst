@@ -1,7 +1,13 @@
-com\marc\mission\Mission.class
-com\marc\economy\EconomyCommand.class
-com\marc\economy\EconomyManager.class
+com\marc\mission\MissionUI.class
+com\marc\player\PlayerJoinListener.class
 com\marc\EscapeCommand.class
 com\marc\mission\MissionCommand.class
 com\marc\mission\MissionManager.class
-com\marc\PlayerJoinListener.class
+com\marc\player\PlayerCollectListener.class
+com\marc\leaderboard\LeaderboardCommand.class
+com\marc\leaderboard\LeaderboardManager.class
+com\marc\config\ConfigManager.class
+com\marc\mission\Mission.class
+com\marc\economy\EconomyCommand.class
+com\marc\economy\EconomyManager.class
+com\marc\mission\Mission$MissionType.class

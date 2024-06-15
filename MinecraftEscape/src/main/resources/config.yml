@@ -1,0 +1,20 @@
+missions:
+  mission1:
+    name: "Find the Key"
+    description: "Find the hidden key in the forest."
+    rewardMoney: 100
+    rewardItem: "DIAMOND"
+    rewardItemAmount: 1
+    targetAmount: 1
+    dependencies:
+      - ""
+
+  mission2:
+    name: "Escape the Forest"
+    description: "Escape the forest after finding the key."
+    rewardMoney: 200
+    rewardItem: "GOLD_INGOT"
+    rewardItemAmount: 5
+    targetAmount: 1
+    dependencies:
+      - mission1
