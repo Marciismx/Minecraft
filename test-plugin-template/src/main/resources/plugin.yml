@@ -1,0 +1,9 @@
+name: TestPluginTemplate
+main: com.marc.plugin
+version: 1.0
+api-version: 1.16
+description: A base template for Minecraft plugins
+author: Marc
+commands:
+  hello:
+    description: Says hello to the player.
