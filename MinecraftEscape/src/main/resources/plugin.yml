@@ -1,0 +1,9 @@
+name: MinecraftEscape
+main: com.marc.Main
+version: 1.0
+api-version: 1.16
+description: A Minecraft plugin for Escape from Tarkov
+author: Marciismx
+commands:
+  escape:
+    description: Start the escape sequence.
