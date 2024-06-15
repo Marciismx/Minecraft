@@ -6,4 +6,4 @@ description: A base template for Minecraft plugins
 author: Marc
 commands:
   hello:
-    description: Says hello to the player.
+    description: Says hello to the player hoi.
