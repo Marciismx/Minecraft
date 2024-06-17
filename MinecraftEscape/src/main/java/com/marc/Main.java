@@ -23,12 +23,11 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         // Initialize managers
-        this.configManager = new ConfigManager(this);
-        this.economyManager = new EconomyManager();
-        this.missionStorage = new FileMissionStorage(this);
-        this.missionUI = new MissionUI(missionManager, configManager);
-        this.missionManager = new MissionManager(missionStorage, configManager, missionUI);
-        this.missionUI = new MissionUI(missionManager, configManager);
+        MissionStorage storage = new MissionStorage();
+        ConfigManager config = new ConfigManager();
+        MissionUI ui = new MissionUI();
+        MissionManager manager = new MissionManager(storage, config, ui);
+        getServer().getPluginManager().registerEvents(new PlayerCollectListener(manager), this);
 
         // Register event listeners
         getServer().getPluginManager().registerEvents(missionManager, this);

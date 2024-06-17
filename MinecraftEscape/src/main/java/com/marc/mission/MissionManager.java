@@ -2,7 +2,7 @@ package com.marc.mission;
 
 import com.marc.config.ConfigManager;
 import com.marc.economy.EconomyManager;
-import com.marc.mission.MissionUI; // Import statement for MissionUI
+import com.marc.missionui.MissionUI; // Import statement for MissionUI
 import com.marc.storage.MissionStorage;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

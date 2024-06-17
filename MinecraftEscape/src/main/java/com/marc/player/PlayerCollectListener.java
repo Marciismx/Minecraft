@@ -12,9 +12,8 @@ public class PlayerCollectListener implements Listener {
     private MissionManager missionManager;
     private EconomyManager economyManager;
 
-    public PlayerCollectListener(MissionManager missionManager, EconomyManager economyManager) {
+    public PlayerCollectListener(MissionManager missionManager) {
         this.missionManager = missionManager;
-        this.economyManager = economyManager;
     }
 
     @EventHandler
