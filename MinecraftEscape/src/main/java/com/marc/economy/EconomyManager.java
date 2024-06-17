@@ -1,23 +1,40 @@
 package com.marc.economy;
 
 import org.bukkit.entity.Player;
+
 import java.util.HashMap;
-import java.util.UUID;
+import java.util.Map;
 
 public class EconomyManager {
-    private HashMap<UUID, Double> balances = new HashMap<>();
 
-    public double getBalance(Player player) {
-        return balances.getOrDefault(player.getUniqueId(), 0.0);
+    private Map<Player, Double> balances;
+
+    public EconomyManager() {
+        balances = new HashMap<>();
+    }
+
+    public Map<Player, Double> getBalances() {
+        return balances;
     }
 
     public void addBalance(Player player, double amount) {
-        double currentBalance = getBalance(player);
-        balances.put(player.getUniqueId(), currentBalance + amount);
+        balances.put(player, getBalance(player) + amount);
     }
 
-    public void subtractBalance(Player player, double amount) {
+    public double getBalance(Player player) {
+        return balances.getOrDefault(player, 0.0);
+    }
+
+    public void setBalance(Player player, double amount) {
+        balances.put(player, amount);
+    }
+
+    public boolean withdrawBalance(Player player, double amount) {
         double currentBalance = getBalance(player);
-        balances.put(player.getUniqueId(), Math.max(0, currentBalance - amount));
+        if (currentBalance >= amount) {
+            balances.put(player, currentBalance - amount);
+            return true;
+        }
+        return false;
     }
 }

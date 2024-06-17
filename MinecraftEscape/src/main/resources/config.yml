@@ -1,48 +1,59 @@
 storage:
-  type: file # Opties: file, database
-  database:
-    url: jdbc:mysql://localhost:3306/minecraft
-    username: root
-    password: password
+  type: file
   file:
     path: plugins/MinecraftEscape/data.yml
 
 missions:
-  collect:
+  collect_diamonds:
     name: "Collect Diamonds"
     description: "Collect 10 diamonds."
-    rewardMoney: 100.0
-    rewardItem: DIAMOND
-    rewardItemAmount: 10
-    targetAmount: 10
+    action: "COLLECT"
+    target: "DIAMOND"
+    amount: 10
+    icon: "DIAMOND"
+    reward:
+      type: "MONEY"
+      amount: 100.0
     dependencies: []
 
-  pvp:
+  pvp_challenge:
     name: "PvP Challenge"
     description: "Defeat 5 players."
-    rewardMoney: 200.0
-    rewardItem: GOLDEN_APPLE
-    rewardItemAmount: 5
-    targetAmount: 5
+    action: "KILL"
+    target: "PLAYER"
+    amount: 5
+    icon: "DIAMOND_SWORD"
+    reward:
+      type: "ITEM"
+      item: "GOLDEN_APPLE"
+      amount: 5
     dependencies:
-      - collect
+      - collect_diamonds
 
-  survival:
+  survive_night:
     name: "Survive Night"
     description: "Survive a night without dying."
-    rewardMoney: 300.0
-    rewardItem: IRON_SWORD
-    rewardItemAmount: 1
-    targetAmount: 1
+    action: "SURVIVE"
+    target: ""
+    amount: 1
+    icon: "IRON_PICKAXE"
+    reward:
+      type: "ITEM"
+      item: "IRON_SWORD"
+      amount: 1
     dependencies:
-      - pvp
+      - pvp_challenge
 
   defeat_zombies:
     name: "Defeat Zombies"
     description: "Defeat 20 zombies."
-    rewardMoney: 400.0
-    rewardItem: DIAMOND_SWORD
-    rewardItemAmount: 1
-    targetAmount: 20
+    action: "KILL"
+    target: "ZOMBIE"
+    amount: 20
+    icon: "ZOMBIE_HEAD"
+    reward:
+      type: "ITEM"
+      item: "DIAMOND_SWORD"
+      amount: 1
     dependencies:
-      - survival
+      - survive_night

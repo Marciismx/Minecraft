@@ -1,25 +1,35 @@
 package com.marc.leaderboard;
 
+import com.marc.economy.EconomyManager;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 public class LeaderboardManager {
-    private Map<UUID, Integer> playerScores = new HashMap<>();
 
-    public void addScore(Player player, int score) {
-        playerScores.put(player.getUniqueId(), playerScores.getOrDefault(player.getUniqueId(), 0) + score);
+    private final EconomyManager economyManager;
+
+    public LeaderboardManager(EconomyManager economyManager) {
+        this.economyManager = economyManager;
     }
 
-    public int getScore(Player player) {
-        return playerScores.getOrDefault(player.getUniqueId(), 0);
+    public List<Entry<Player, Double>> getTopBalances(int topN) {
+        Map<Player, Double> balances = economyManager.getBalances();
+        List<Entry<Player, Double>> sortedBalances = new ArrayList<>(balances.entrySet());
+        sortedBalances.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+
+        return sortedBalances.subList(0, Math.min(topN, sortedBalances.size()));
     }
 
-    public Map<UUID, Integer> getTopScores(int top) {
-        return playerScores.entrySet().stream()
-                .sorted(Map.Entry.<UUID, Integer>comparingByValue().reversed())
-                .limit(top)
-                .collect(HashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), HashMap::putAll);
+    public void showLeaderboard(CommandSender sender, int topN) {
+        List<Entry<Player, Double>> topBalances = getTopBalances(topN);
+        sender.sendMessage("Balance Leaderboard:");
+        int rank = 1;
+        for (Entry<Player, Double> entry : topBalances) {
+            sender.sendMessage(rank + ". " + entry.getKey().getName() + " - " + entry.getValue());
+            rank++;
+        }
     }
 }

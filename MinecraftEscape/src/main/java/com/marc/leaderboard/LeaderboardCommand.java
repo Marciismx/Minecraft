@@ -1,35 +1,45 @@
 package com.marc.leaderboard;
 
+import com.marc.economy.EconomyManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class LeaderboardCommand implements CommandExecutor {
-    private LeaderboardManager leaderboardManager;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
-    public LeaderboardCommand(LeaderboardManager leaderboardManager) {
-        this.leaderboardManager = leaderboardManager;
+public class LeaderboardCommand implements CommandExecutor {
+
+    private final EconomyManager economyManager;
+
+    public LeaderboardCommand(EconomyManager economyManager) {
+        this.economyManager = economyManager;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (args.length == 0) {
-                player.sendMessage("Your score: " + leaderboardManager.getScore(player));
-                return true;
-            }
-            if (args.length == 1 && args[0].equalsIgnoreCase("top")) {
-                player.sendMessage("Top Scores:");
-                leaderboardManager.getTopScores(5).forEach((uuid, score) -> {
-                    player.sendMessage(uuid.toString() + ": " + score);
-                });
-                return true;
-            }
-        } else {
-            sender.sendMessage("This command can only be run by a player.");
+        if (args.length > 0 && args[0].equalsIgnoreCase("balance")) {
+            showBalanceLeaderboard(sender);
+            return true;
         }
+
+        sender.sendMessage("Usage: /leaderboard balance");
         return false;
+    }
+
+    private void showBalanceLeaderboard(CommandSender sender) {
+        Map<Player, Double> balances = economyManager.getBalances();
+        List<Map.Entry<Player, Double>> sortedBalances = new ArrayList<>(balances.entrySet());
+        sortedBalances.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+
+        sender.sendMessage("Balance Leaderboard:");
+        int rank = 1;
+        for (Map.Entry<Player, Double> entry : sortedBalances) {
+            sender.sendMessage(rank + ". " + entry.getKey().getName() + " - " + entry.getValue());
+            rank++;
+        }
     }
 }

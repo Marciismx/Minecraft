@@ -1,28 +1,35 @@
 package com.marc.player;
 
+import com.marc.economy.EconomyManager;
+import com.marc.mission.Mission;
+import com.marc.mission.MissionManager;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import com.marc.mission.MissionManager;
-import com.marc.economy.EconomyManager;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.Material;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 
 public class PlayerCollectListener implements Listener {
     private MissionManager missionManager;
-    private EconomyManager economyManager;
 
-    public PlayerCollectListener(MissionManager missionManager, EconomyManager economyManager) {
+    public PlayerCollectListener(MissionManager missionManager) {
         this.missionManager = missionManager;
-        this.economyManager = economyManager;
     }
 
     @EventHandler
-    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-        ItemStack item = event.getItem().getItemStack();
-        if (item.getType() == Material.DIAMOND) {
-            if (missionManager.getActiveMission(event.getPlayer()) != null) {
-                missionManager.completeMission(event.getPlayer(), economyManager);
+    public void onPlayerPickupItem(EntityPickupItemEvent event) {
+        if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
+        Player player = (Player) event.getEntity();
+        Mission activeMission = missionManager.getActiveMission(player);
+    
+        if (activeMission != null && activeMission.getAction() == Mission.ActionType.COLLECT) {
+            if (event.getItem().getItemStack().getType() == activeMission.getTarget()) {
+                int count = missionManager.getItemCounts().getOrDefault(player.getUniqueId(), 0) + event.getItem().getItemStack().getAmount();
+                missionManager.getItemCounts().put(player.getUniqueId(), count);
+                if (count >= activeMission.getAmount()) {
+                    missionManager.completeMission(player, new EconomyManager());
+                }
             }
         }
     }

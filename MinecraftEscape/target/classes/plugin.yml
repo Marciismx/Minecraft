@@ -1,22 +1,20 @@
 name: MinecraftEscape
-main: com.marc.Main
 version: 1.0
-api-version: 1.16
-description: A Minecraft plugin for Escape from Tarkov
+main: com.marc.Main
 author: Marciismx
-
+api-version: 1.13
+description: A Minecraft plugin that adds missions and an economy system.
 commands:
-  escape:
-    description: Start the escape sequence.
-  economy:
-    description: Manage your in-game balance.
   mission:
-    description: Open the mission menu.
-    permission: minecraftescape.mission
-  leaderboard:
-    description: View the leaderboard.
-
-permissions:
-  minecraftescape.mission:
-    description: Allows a player to use the mission command
+    description: Opens the mission menu.
+    usage: /mission [archive]
+  escape:
+    description: Provides escape related commands.
+    usage: /escape [status|help]
+permissions: 
+  mission.use:
+    description: Allows the player to use mission commands.
+    default: true
+  escape.use:
+    description: Allows the player to use escape commands.
     default: true

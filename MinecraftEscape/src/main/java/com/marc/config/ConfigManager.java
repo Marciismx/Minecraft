@@ -1,44 +1,54 @@
 package com.marc.config;
 
+import com.marc.Main;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
 
 public class ConfigManager {
-    private JavaPlugin plugin;
-    private FileConfiguration config;
 
-    public ConfigManager(JavaPlugin plugin) {
+    private final Main plugin;
+    private FileConfiguration config = null;
+    private File configFile = null;
+
+    public ConfigManager(Main plugin) {
         this.plugin = plugin;
-        loadConfig();
+        saveDefaultConfig();
     }
 
-    public void loadConfig() {
-        File configFile = new File(plugin.getDataFolder(), "config.yml");
-        if (!configFile.exists()) {
-            plugin.saveResource("config.yml", false);
+    public void reloadConfig() {
+        if (configFile == null) {
+            configFile = new File(plugin.getDataFolder(), "config.yml");
         }
         config = YamlConfiguration.loadConfiguration(configFile);
     }
 
+    public FileConfiguration getConfig() {
+        if (config == null) {
+            reloadConfig();
+        }
+        return config;
+    }
+
     public void saveConfig() {
+        if (config == null || configFile == null) {
+            return;
+        }
         try {
-            config.save(new File(plugin.getDataFolder(), "config.yml"));
-        } catch (IOException e) {
-            e.printStackTrace();
+            getConfig().save(configFile);
+        } catch (IOException ex) {
+            plugin.getLogger().severe("Could not save config to " + configFile);
         }
     }
 
     public void saveDefaultConfig() {
-        if (config == null) {
+        if (configFile == null) {
+            configFile = new File(plugin.getDataFolder(), "config.yml");
+        }
+        if (!configFile.exists()) {
             plugin.saveResource("config.yml", false);
         }
-    }
-
-    public FileConfiguration getConfig() {
-        return config;
     }
 }

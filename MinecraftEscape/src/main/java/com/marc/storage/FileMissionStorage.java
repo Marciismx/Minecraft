@@ -1,5 +1,6 @@
 package com.marc.storage;
 
+import com.marc.Main;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -10,34 +11,53 @@ import java.util.Map;
 import java.util.UUID;
 
 public class FileMissionStorage implements MissionStorage {
-    private File file;
-    private FileConfiguration config;
 
-    public FileMissionStorage(File file) {
-        this.file = file;
-        this.config = YamlConfiguration.loadConfiguration(file);
+    private final Main plugin;
+    private File storageFile;
+    private FileConfiguration storageConfig;
+
+    public FileMissionStorage(Main plugin) {
+        this.plugin = plugin;
+        reload();
     }
 
-    @Override
-    public void saveMissionProgress(UUID playerId, Map<String, Boolean> progress) {
-        for (Map.Entry<String, Boolean> entry : progress.entrySet()) {
-            config.set(playerId.toString() + "." + entry.getKey(), entry.getValue());
+    public void reload() {
+        if (storageFile == null) {
+            storageFile = new File(plugin.getDataFolder(), "data.yml");
         }
+        if (!storageFile.exists()) {
+            try {
+                storageFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        storageConfig = YamlConfiguration.loadConfiguration(storageFile);
+    }
+
+    public void saveMissionProgress(UUID playerUUID, Map<String, Boolean> progress) {
+        storageConfig.set(playerUUID.toString(), progress);
+        save();
+    }
+
+    public Map<String, Boolean> loadMissionProgress(UUID playerUUID) {
+        if (storageConfig.contains(playerUUID.toString())) {
+            Map<String, Object> progressMap = storageConfig.getConfigurationSection(playerUUID.toString()).getValues(false);
+            Map<String, Boolean> progress = new HashMap<>();
+            for (Map.Entry<String, Object> entry : progressMap.entrySet()) {
+                progress.put(entry.getKey(), (Boolean) entry.getValue());
+            }
+            return progress;
+        } else {
+            return new HashMap<>();
+        }
+    }
+
+    public void save() {
         try {
-            config.save(file);
+            storageConfig.save(storageFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public Map<String, Boolean> loadMissionProgress(UUID playerId) {
-        Map<String, Boolean> progress = new HashMap<>();
-        if (config.contains(playerId.toString())) {
-            for (String key : config.getConfigurationSection(playerId.toString()).getKeys(false)) {
-                progress.put(key, config.getBoolean(playerId.toString() + "." + key));
-            }
-        }
-        return progress;
     }
 }
