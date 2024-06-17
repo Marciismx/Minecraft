@@ -1,6 +1,7 @@
 package com.marc.mission;
 
 import com.marc.config.ConfigManager;
+import com.marc.mission.MissionManager; 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -38,7 +39,7 @@ public class MissionUI implements Listener {
             String rewardType = configManager.getConfig().getString(path + "reward.type");
             String rewardItemStr = configManager.getConfig().getString(path + "reward.item");
             double rewardMoney = configManager.getConfig().getDouble(path + "reward.amount");
-            int rewardItemAmount = configManager.getConfig().getInt(path + "reward.amount");
+            int rewardItemAmount = configManager.getConfig().getInt(path + "reward.itemAmount");
             Material iconMaterial = Material.getMaterial(configManager.getConfig().getString(path + "icon").toUpperCase());
 
             boolean dependenciesCompleted = missionManager.canStartMission(player, name);
@@ -156,7 +157,7 @@ public class MissionUI implements Listener {
         String rewardTypeStr = configManager.getConfig().getString(path + "reward.type");
         double rewardMoney = rewardTypeStr.equalsIgnoreCase("MONEY") ? configManager.getConfig().getDouble(path + "reward.amount") : 0;
         String rewardItemStr = rewardTypeStr.equalsIgnoreCase("ITEM") ? configManager.getConfig().getString(path + "reward.item") : null;
-        int rewardItemAmount = rewardTypeStr.equalsIgnoreCase("ITEM") ? configManager.getConfig().getInt(path + "reward.amount") : 0;
+        int rewardItemAmount = rewardTypeStr.equalsIgnoreCase("ITEM") ? configManager.getConfig().getInt(path + "reward.itemAmount") : 0;
         Material iconMaterial = Material.getMaterial(configManager.getConfig().getString(path + "icon").toUpperCase());
         Material target = targetStr.isEmpty() ? null : Material.getMaterial(targetStr.toUpperCase());
 

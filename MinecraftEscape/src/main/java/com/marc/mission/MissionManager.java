@@ -2,6 +2,7 @@ package com.marc.mission;
 
 import com.marc.config.ConfigManager;
 import com.marc.economy.EconomyManager;
+import com.marc.mission.MissionUI; // Import statement for MissionUI
 import com.marc.storage.MissionStorage;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -19,20 +20,21 @@ import java.util.Map;
 import java.util.UUID;
 
 public class MissionManager implements Listener {
-    private MissionStorage missionStorage;
     private ConfigManager configManager;
     private MissionUI missionUI;
     private Map<UUID, Mission> activeMissions = new HashMap<>();
     private Map<UUID, Map<String, Boolean>> completedMissions = new HashMap<>();
     private Map<UUID, Integer> itemCounts = new HashMap<>();
-    private EconomyManager economyManager = new EconomyManager();
+    private EconomyManager economyManager;
+    private MissionStorage missionStorage;
 
-
-    public MissionManager(MissionStorage missionStorage, ConfigManager configManager, MissionUI missionUI) {
+    public MissionManager(MissionStorage missionStorage, ConfigManager configManager, MissionUI missionUI, EconomyManager economyManager) {
         this.missionStorage = missionStorage;
         this.configManager = configManager;
         this.missionUI = missionUI;
+        this.economyManager = economyManager;
     }
+
 
     public void assignMission(Player player, Mission mission) {
         activeMissions.put(player.getUniqueId(), mission);
@@ -148,29 +150,13 @@ public class MissionManager implements Listener {
     }
 
     @EventHandler
-public void onBlockBreak(BlockBreakEvent event) {
-    Player player = event.getPlayer();
-    Block block = event.getBlock();
-    Mission activeMission = getActiveMission(player);
-    if (activeMission != null && activeMission.getAction() == Mission.ActionType.COLLECT) {
-        if (block.getType() == activeMission.getTarget()) {
-            int count = itemCounts.getOrDefault(player.getUniqueId(), 0) + 1; // consider changing 1 to the number of blocks broken
-            itemCounts.put(player.getUniqueId(), count);
-            if (count == activeMission.getAmount()) {
-                completeMission(player, economyManager);
-            }
-        }
-    }
-}
-
-@EventHandler
-public void onEntityPickupItem(EntityPickupItemEvent event) {
-    if (event.getEntity() instanceof Player) {
-        Player player = (Player) event.getEntity();
+    public void onBlockBreak(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        Block block = event.getBlock();
         Mission activeMission = getActiveMission(player);
         if (activeMission != null && activeMission.getAction() == Mission.ActionType.COLLECT) {
-            if (event.getItem().getItemStack().getType() == activeMission.getTarget()) {
-                int count = itemCounts.getOrDefault(player.getUniqueId(), 0) + event.getItem().getItemStack().getAmount();
+            if (block.getType() == activeMission.getTarget()) {
+                int count = itemCounts.getOrDefault(player.getUniqueId(), 0) + 1; // consider changing 1 to the number of blocks broken
                 itemCounts.put(player.getUniqueId(), count);
                 if (count == activeMission.getAmount()) {
                     completeMission(player, economyManager);
@@ -178,7 +164,23 @@ public void onEntityPickupItem(EntityPickupItemEvent event) {
             }
         }
     }
-}
+    
+    @EventHandler
+    public void onEntityPickupItem(EntityPickupItemEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            Mission activeMission = getActiveMission(player);
+            if (activeMission != null && activeMission.getAction() == Mission.ActionType.COLLECT) {
+                if (event.getItem().getItemStack().getType() == activeMission.getTarget()) {
+                    int count = itemCounts.getOrDefault(player.getUniqueId(), 0) + event.getItem().getItemStack().getAmount();
+                    itemCounts.put(player.getUniqueId(), count);
+                    if (count == activeMission.getAmount()) {
+                        completeMission(player, economyManager);
+                    }
+                }
+            }
+        }
+    }
 
     public MissionUI getMissionUI() {
         return missionUI;

@@ -10,9 +10,11 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 
 public class PlayerCollectListener implements Listener {
     private MissionManager missionManager;
+    private EconomyManager economyManager;
 
-    public PlayerCollectListener(MissionManager missionManager) {
+    public PlayerCollectListener(MissionManager missionManager, EconomyManager economyManager) {
         this.missionManager = missionManager;
+        this.economyManager = economyManager;
     }
 
     @EventHandler
@@ -28,7 +30,7 @@ public class PlayerCollectListener implements Listener {
                 int count = missionManager.getItemCounts().getOrDefault(player.getUniqueId(), 0) + event.getItem().getItemStack().getAmount();
                 missionManager.getItemCounts().put(player.getUniqueId(), count);
                 if (count >= activeMission.getAmount()) {
-                    missionManager.completeMission(player, new EconomyManager());
+                    missionManager.completeMission(player, economyManager);
                 }
             }
         }

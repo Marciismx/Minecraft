@@ -28,10 +28,11 @@ public class Main extends JavaPlugin {
         this.missionStorage = new FileMissionStorage(this);
         this.missionUI = new MissionUI(missionManager, configManager);
         this.missionManager = new MissionManager(missionStorage, configManager, missionUI);
+        this.missionUI = new MissionUI(missionManager, configManager);
 
         // Register event listeners
         getServer().getPluginManager().registerEvents(missionManager, this);
-        getServer().getPluginManager().registerEvents(missionUI, this);
+        getServer().getPluginManager().registerEvents(new PlayerCollectListener(getMissionManager()), this);
         getServer().getPluginManager().registerEvents(new PlayerCollectListener(missionManager), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(missionManager), this);
 
