@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class MissionCommand implements CommandExecutor {
-
     private final MissionManager missionManager;
 
     public MissionCommand(MissionManager missionManager, EconomyManager economyManager, ConfigManager configManager) {
@@ -17,23 +16,29 @@ public class MissionCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("Only players can use this command.");
-            return true;
+        try {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("Only players can use this command.");
+                return true;
+            }
+    
+            Player player = (Player) sender;
+            if (args.length == 0) {
+                missionManager.getMissionUI().openMissionMenu(player);
+                return true;
+            }
+    
+            if (args.length == 1 && args[0].equalsIgnoreCase("archive")) {
+                missionManager.getMissionUI().openArchiveMenu(player);
+                return true;
+            }
+    
+            sender.sendMessage("Invalid command usage.");
+            return false;
+        } catch (Exception e) {
+            sender.sendMessage("An error occurred while executing the command.");
+            e.printStackTrace();
+            return false;
         }
-
-        Player player = (Player) sender;
-        if (args.length == 0) {
-            missionManager.getMissionUI().openMissionMenu(player);
-            return true;
-        }
-
-        if (args.length == 1 && args[0].equalsIgnoreCase("archive")) {
-            missionManager.getMissionUI().openArchiveMenu(player);
-            return true;
-        }
-
-        sender.sendMessage("Invalid command usage.");
-        return false;
     }
 }

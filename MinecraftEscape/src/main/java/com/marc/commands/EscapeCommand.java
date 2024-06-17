@@ -21,30 +21,29 @@ public class EscapeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("Only players can use this command.");
-            return true;
+        try {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("Only players can use this command.");
+                return true;
+            }
+    
+            Player player = (Player) sender;
+            if (args.length == 0) {
+                missionManager.getMissionUI().openMissionMenu(player);
+                return true;
+            }
+    
+            if (args.length == 1 && args[0].equalsIgnoreCase("archive")) {
+                missionManager.getMissionUI().openArchiveMenu(player);
+                return true;
+            }
+    
+            sender.sendMessage("Invalid command usage.");
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-
-        Player player = (Player) sender;
-        
-        if (args.length == 0) {
-            player.sendMessage("Escape commands: /escape status, /escape help");
-            return true;
-        }
-
-        if (args[0].equalsIgnoreCase("status")) {
-            showStatus(player);
-            return true;
-        }
-
-        if (args[0].equalsIgnoreCase("help")) {
-            showHelp(player);
-            return true;
-        }
-
-        sender.sendMessage("Invalid command usage. Use /escape help for a list of commands.");
-        return false;
     }
 
     private void showStatus(Player player) {

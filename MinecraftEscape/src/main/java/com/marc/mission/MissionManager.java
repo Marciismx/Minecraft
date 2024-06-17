@@ -25,6 +25,8 @@ public class MissionManager implements Listener {
     private Map<UUID, Mission> activeMissions = new HashMap<>();
     private Map<UUID, Map<String, Boolean>> completedMissions = new HashMap<>();
     private Map<UUID, Integer> itemCounts = new HashMap<>();
+    private EconomyManager economyManager = new EconomyManager();
+
 
     public MissionManager(MissionStorage missionStorage, ConfigManager configManager, MissionUI missionUI) {
         this.missionStorage = missionStorage;
@@ -146,37 +148,37 @@ public class MissionManager implements Listener {
     }
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent event) {
-        Player player = event.getPlayer();
-        Block block = event.getBlock();
+public void onBlockBreak(BlockBreakEvent event) {
+    Player player = event.getPlayer();
+    Block block = event.getBlock();
+    Mission activeMission = getActiveMission(player);
+    if (activeMission != null && activeMission.getAction() == Mission.ActionType.COLLECT) {
+        if (block.getType() == activeMission.getTarget()) {
+            int count = itemCounts.getOrDefault(player.getUniqueId(), 0) + 1; // consider changing 1 to the number of blocks broken
+            itemCounts.put(player.getUniqueId(), count);
+            if (count == activeMission.getAmount()) {
+                completeMission(player, economyManager);
+            }
+        }
+    }
+}
+
+@EventHandler
+public void onEntityPickupItem(EntityPickupItemEvent event) {
+    if (event.getEntity() instanceof Player) {
+        Player player = (Player) event.getEntity();
         Mission activeMission = getActiveMission(player);
         if (activeMission != null && activeMission.getAction() == Mission.ActionType.COLLECT) {
-            if (block.getType() == activeMission.getTarget()) {
-                int count = itemCounts.getOrDefault(player.getUniqueId(), 0) + 1;
+            if (event.getItem().getItemStack().getType() == activeMission.getTarget()) {
+                int count = itemCounts.getOrDefault(player.getUniqueId(), 0) + event.getItem().getItemStack().getAmount();
                 itemCounts.put(player.getUniqueId(), count);
-                if (count >= activeMission.getAmount()) {
-                    completeMission(player, new EconomyManager());
+                if (count == activeMission.getAmount()) {
+                    completeMission(player, economyManager);
                 }
             }
         }
     }
-
-    @EventHandler
-    public void onEntityPickupItem(EntityPickupItemEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
-            Mission activeMission = getActiveMission(player);
-            if (activeMission != null && activeMission.getAction() == Mission.ActionType.COLLECT) {
-                if (event.getItem().getItemStack().getType() == activeMission.getTarget()) {
-                    int count = itemCounts.getOrDefault(player.getUniqueId(), 0) + event.getItem().getItemStack().getAmount();
-                    itemCounts.put(player.getUniqueId(), count);
-                    if (count >= activeMission.getAmount()) {
-                        completeMission(player, new EconomyManager());
-                    }
-                }
-            }
-        }
-    }
+}
 
     public MissionUI getMissionUI() {
         return missionUI;
