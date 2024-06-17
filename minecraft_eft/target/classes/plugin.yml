@@ -1,9 +1,18 @@
 name: MinecraftEFT
 version: 1.0
-main: com.marc.minecraft_eft
+main: com.marc.Main
 api-version: 1.16
 
 commands:
   mission:
     description: Manage missions
-    usage: /mission add <name> <description>
+    usage: /mission add <name> <areaName> <description> <reward>
+  balance:
+    description: Check and manage balance
+    usage: /balance or /balance add <amount> or /balance subtract <amount>
+  leaderboard:
+    description: View the leaderboard
+    usage: /leaderboard
+  area:
+    description: Manage areas
+    usage: /area add <name>

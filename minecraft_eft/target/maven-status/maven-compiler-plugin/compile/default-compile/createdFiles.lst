@@ -1,3 +1,3 @@
-com\marc\Mission.class
-com\marc\MissionCommand.class
-com\marc\MissionManager.class
+com\marc\Mission\MissionCommand.class
+com\marc\Mission\MissionManager.class
+com\marc\Mission\Mission.class

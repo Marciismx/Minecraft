@@ -1,0 +1,5 @@
+mission0:
+  name: ExampleMission
+  description: Complete this mission.
+  areaName: ExampleArea
+  reward: DIAMOND

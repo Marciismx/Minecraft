@@ -1,0 +1,6 @@
+area0:
+  name: ExampleArea
+  x: 100
+  y: 65
+  z: 200
+  world: world
