@@ -1,20 +1,48 @@
+storage:
+  type: file # Opties: file, database
+  database:
+    url: jdbc:mysql://localhost:3306/minecraft
+    username: root
+    password: password
+  file:
+    path: plugins/MinecraftEscape/data.yml
+
 missions:
-  mission1:
-    name: "Find the Key"
-    description: "Find the hidden key in the forest."
-    rewardMoney: 100
-    rewardItem: "DIAMOND"
+  collect:
+    name: "Collect Diamonds"
+    description: "Collect 10 diamonds."
+    rewardMoney: 100.0
+    rewardItem: DIAMOND
+    rewardItemAmount: 10
+    targetAmount: 10
+    dependencies: []
+
+  pvp:
+    name: "PvP Challenge"
+    description: "Defeat 5 players."
+    rewardMoney: 200.0
+    rewardItem: GOLDEN_APPLE
+    rewardItemAmount: 5
+    targetAmount: 5
+    dependencies:
+      - collect
+
+  survival:
+    name: "Survive Night"
+    description: "Survive a night without dying."
+    rewardMoney: 300.0
+    rewardItem: IRON_SWORD
     rewardItemAmount: 1
     targetAmount: 1
     dependencies:
-      - ""
+      - pvp
 
-  mission2:
-    name: "Escape the Forest"
-    description: "Escape the forest after finding the key."
-    rewardMoney: 200
-    rewardItem: "GOLD_INGOT"
-    rewardItemAmount: 5
-    targetAmount: 1
+  defeat_zombies:
+    name: "Defeat Zombies"
+    description: "Defeat 20 zombies."
+    rewardMoney: 400.0
+    rewardItem: DIAMOND_SWORD
+    rewardItemAmount: 1
+    targetAmount: 20
     dependencies:
-      - mission1
+      - survival

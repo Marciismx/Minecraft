@@ -77,6 +77,7 @@ public class MissionUI implements Listener {
                 Mission mission = createMissionFromConfig(key);
                 missionManager.assignMission(player, mission);
                 player.sendMessage("Mission assigned: " + mission.getName());
+                player.sendTitle("Mission Assigned", mission.getName(), 10, 70, 20);
                 return;
             }
         }

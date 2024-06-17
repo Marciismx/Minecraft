@@ -1,4 +1,7 @@
+com\marc\storage\MissionStorage.class
 com\marc\mission\MissionUI.class
+com\marc\storage\DatabaseMissionStorage.class
+com\marc\storage\FileMissionStorage.class
 com\marc\player\PlayerJoinListener.class
 com\marc\EscapeCommand.class
 com\marc\mission\MissionCommand.class
