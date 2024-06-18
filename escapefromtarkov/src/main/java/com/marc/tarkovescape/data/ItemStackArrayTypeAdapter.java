@@ -8,6 +8,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.lang.reflect.Type;
 
 public class ItemStackArrayTypeAdapter implements JsonSerializer<ItemStack[]>, JsonDeserializer<ItemStack[]> {
+
     @Override
     public JsonElement serialize(ItemStack[] src, Type typeOfSrc, JsonSerializationContext context) {
         JsonArray jsonArray = new JsonArray();
