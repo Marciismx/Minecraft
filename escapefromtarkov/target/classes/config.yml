@@ -1,0 +1,5 @@
+database:
+  enabled: false
+  url: jdbc:mysql://localhost:3306/minecraft
+  username: root
+  password: password
