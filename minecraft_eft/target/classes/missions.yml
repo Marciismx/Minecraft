@@ -2,4 +2,6 @@ mission0:
   name: ExampleMission
   description: Complete this mission.
   areaName: ExampleArea
-  reward: DIAMOND
+  reward:
+    items: DIAMOND,IRON_INGOT
+    experience: 100

@@ -1,10 +1,12 @@
 package com.marc.Mission;
 
 import com.marc.config.ConfigManager;
+import com.marc.progress.PlayerProgressManager;
+import com.marc.rewards.Reward;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -12,12 +14,14 @@ import java.util.UUID;
 public class MissionManager {
     private List<Mission> missions;
     private List<UUID> completedMissions;
+    private PlayerProgressManager playerProgressManager;
     private ConfigManager configManager;
 
-    public MissionManager(ConfigManager configManager) {
+    public MissionManager(ConfigManager configManager, PlayerProgressManager playerProgressManager) {
         this.missions = new ArrayList<>();
         this.completedMissions = new ArrayList<>();
         this.configManager = configManager;
+        this.playerProgressManager = playerProgressManager;
         loadMissions();
     }
 
@@ -42,7 +46,12 @@ public class MissionManager {
     public void completeMission(Mission mission, Player player) {
         completedMissions.add(player.getUniqueId());
         missions.remove(mission);
+        playerProgressManager.setPlayerProgress(player.getUniqueId(), 0);  // Clear progress on completion
         saveMissions();
+    }
+
+    public void startMission(Mission mission, Player player) {
+        playerProgressManager.setPlayerProgress(player.getUniqueId(), mission.getExperience());
     }
 
     private void loadMissions() {
@@ -51,9 +60,24 @@ public class MissionManager {
             String name = config.getString(key + ".name");
             String description = config.getString(key + ".description");
             String areaName = config.getString(key + ".areaName");
-            String rewardMaterial = config.getString(key + ".reward");
-            ItemStack reward = new ItemStack(Material.getMaterial(rewardMaterial.toUpperCase()));
-            missions.add(new Mission(name, description, areaName, reward));
+            String rewardItemsString = config.getString(key + ".reward.items");
+            int experience = config.getInt(key + ".reward.experience");
+
+            if (name == null || description == null || areaName == null || rewardItemsString == null) {
+                System.out.println("Missing configuration for mission: " + key);
+                continue;
+            }
+
+            String[] rewardMaterials = rewardItemsString.split(",");
+            List<ItemStack> rewards = new ArrayList<>();
+            for (String rewardMaterial : rewardMaterials) {
+                Material material = Material.getMaterial(rewardMaterial.toUpperCase());
+                if (material != null) {
+                    rewards.add(new ItemStack(material, 1));
+                }
+            }
+            Reward reward = new Reward(rewards, experience);
+            missions.add(new Mission(name, description, areaName, rewards, experience));
         }
     }
 
@@ -66,8 +90,13 @@ public class MissionManager {
             config.set(key + ".name", mission.getName());
             config.set(key + ".description", mission.getDescription());
             config.set(key + ".areaName", mission.getAreaName());
-            config.set(key + ".reward", mission.getReward().getType().name());
+            StringBuilder rewards = new StringBuilder();
+            for (ItemStack reward : mission.getRewards()) {
+                rewards.append(reward.getType().name()).append(",");
+            }
+            config.set(key + ".reward.items", rewards.toString());
+            config.set(key + ".reward.experience", mission.getExperience());
         }
-        configManager.saveConfigs();
+        configManager.saveMissionsConfig();
     }
 }

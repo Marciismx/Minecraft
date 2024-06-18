@@ -1,50 +1,48 @@
 package com.marc.Mission;
 
+import com.marc.rewards.Reward;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public class Mission {
     private String name;
     private String description;
     private String areaName;
-    private ItemStack reward;
+    private List<ItemStack> rewards;
+    private int experience;
+    private Reward reward;
 
-    public Mission(String name, String description, String areaName, ItemStack reward) {
+    public Mission(String name, String description, String areaName, List<ItemStack> rewards, int experience) {
         this.name = name;
         this.description = description;
         this.areaName = areaName;
-        this.reward = reward;
+        this.rewards = rewards;
+        this.experience = experience;
+        this.reward = new Reward(rewards, experience);
     }
 
-    // Getters and Setters
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getAreaName() {
         return areaName;
     }
 
-    public void setAreaName(String areaName) {
-        this.areaName = areaName;
+    public List<ItemStack> getRewards() {
+        return rewards;
     }
 
-    public ItemStack getReward() {
+    public int getExperience() {
+        return experience;
+    }
+
+    public Reward getReward() {
         return reward;
-    }
-
-    public void setReward(ItemStack reward) {
-        this.reward = reward;
     }
 }

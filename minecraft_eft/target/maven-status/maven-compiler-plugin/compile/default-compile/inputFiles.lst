@@ -1,4 +1,5 @@
 c:\Users\Marc\Desktop\GITHUB koppel\minecraft_eft\src\main\java\com\marc\rewards\RewardManager.java
+c:\Users\Marc\Desktop\GITHUB koppel\minecraft_eft\src\main\java\com\marc\data\UserData.java
 c:\Users\Marc\Desktop\GITHUB koppel\minecraft_eft\src\main\java\com\marc\leaderboard\LeaderboardManager.java
 c:\Users\Marc\Desktop\GITHUB koppel\minecraft_eft\src\main\java\com\marc\Mission\MissionManager.java
 c:\Users\Marc\Desktop\GITHUB koppel\minecraft_eft\src\main\java\com\marc\Mission\MissionCommand.java
@@ -8,6 +9,10 @@ c:\Users\Marc\Desktop\GITHUB koppel\minecraft_eft\src\main\java\com\marc\Mission
 c:\Users\Marc\Desktop\GITHUB koppel\minecraft_eft\src\main\java\com\marc\economy\EconomyManager.java
 c:\Users\Marc\Desktop\GITHUB koppel\minecraft_eft\src\main\java\com\marc\config\ConfigManager.java
 c:\Users\Marc\Desktop\GITHUB koppel\minecraft_eft\src\main\java\com\marc\leaderboard\LeaderboardCommand.java
+c:\Users\Marc\Desktop\GITHUB koppel\minecraft_eft\src\main\java\com\marc\data\UserDataManager.java
 c:\Users\Marc\Desktop\GITHUB koppel\minecraft_eft\src\main\java\com\marc\economy\EconomyCommand.java
+c:\Users\Marc\Desktop\GITHUB koppel\minecraft_eft\src\main\java\com\marc\rewards\Reward.java
+c:\Users\Marc\Desktop\GITHUB koppel\minecraft_eft\src\main\java\com\marc\progress\PlayerProgressManager.java
 c:\Users\Marc\Desktop\GITHUB koppel\minecraft_eft\src\main\java\com\marc\Main.java
 c:\Users\Marc\Desktop\GITHUB koppel\minecraft_eft\src\main\java\com\marc\areas\AreaManager.java
+c:\Users\Marc\Desktop\GITHUB koppel\minecraft_eft\src\main\java\com\marc\data\DatabaseManager.java

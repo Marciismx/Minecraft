@@ -1,0 +1,6 @@
+storage:
+  type: "file"  # Opties: "file" of "database"
+  database:
+    url: "jdbc:mysql://localhost:3306/minecraft"
+    username: "yourUsername"
+    password: "yourPassword"

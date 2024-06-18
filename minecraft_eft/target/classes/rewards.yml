@@ -1,0 +1,7 @@
+reward0:
+  items: DIAMOND,IRON_INGOT
+  experience: 100
+
+reward1:
+  items: GOLD_INGOT,EMERALD
+  experience: 200

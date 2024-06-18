@@ -6,6 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MissionCommand implements CommandExecutor {
     private MissionManager missionManager;
@@ -16,26 +18,43 @@ public class MissionCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        try {
-            if (args.length > 3 && args[0].equalsIgnoreCase("add")) {
-                String name = args[1];
-                String areaName = args[2];
-                String description = String.join(" ", Arrays.asList(args).subList(3, args.length - 1));
-                Material rewardMaterial = Material.getMaterial(args[args.length - 1].toUpperCase());
-                if (rewardMaterial == null) {
-                    sender.sendMessage("Invalid reward material: " + args[args.length - 1]);
+        if (args.length < 6) {
+            sender.sendMessage("Usage: /mission add <name> <areaName> <description> <rewardItems> <experience>");
+            return false;
+        }
+        
+        if (args[0].equalsIgnoreCase("add")) {
+            String name = args[1];
+            String areaName = args[2];
+            String description = String.join(" ", Arrays.asList(args).subList(3, args.length - 2));
+            String[] rewardMaterials = args[args.length - 2].split(",");
+            
+            int experience;
+            try {
+                experience = Integer.parseInt(args[args.length - 1]);
+            } catch (NumberFormatException e) {
+                sender.sendMessage("Experience must be a valid number.");
+                return false;
+            }
+            
+            List<ItemStack> rewards = new ArrayList<>();
+            for (String rewardMaterial : rewardMaterials) {
+                Material material = Material.getMaterial(rewardMaterial.toUpperCase());
+                if (material != null) {
+                    rewards.add(new ItemStack(material, 1));
+                } else {
+                    sender.sendMessage("Invalid material: " + rewardMaterial);
                     return false;
                 }
-                ItemStack reward = new ItemStack(rewardMaterial, 1);
-                Mission mission = new Mission(name, description, areaName, reward);
-                missionManager.addMission(mission);
-                sender.sendMessage("Mission added: " + name);
-                return true;
             }
-        } catch (Exception e) {
-            sender.sendMessage("An error occurred while executing the command. Check the server logs for more details.");
-            e.printStackTrace();
+            
+            Mission mission = new Mission(name, description, areaName, rewards, experience);
+            missionManager.addMission(mission);
+            sender.sendMessage("Mission added successfully: " + name);
+            return true;
         }
+
+        sender.sendMessage("Invalid subcommand. Usage: /mission add <name> <areaName> <description> <rewardItems> <experience>");
         return false;
     }
 }

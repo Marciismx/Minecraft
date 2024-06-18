@@ -3,8 +3,8 @@ package com.marc.areas;
 import com.marc.config.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+
 import java.util.HashMap;
 
 public class AreaManager {
@@ -40,28 +40,11 @@ public class AreaManager {
         FileConfiguration config = configManager.getAreasConfig();
         for (String key : config.getKeys(false)) {
             String name = config.getString(key + ".name");
-            if (name == null) {
-                Bukkit.getLogger().warning("Area name is missing for key: " + key);
-                continue;
-            }
-
             double x = config.getDouble(key + ".x");
             double y = config.getDouble(key + ".y");
             double z = config.getDouble(key + ".z");
-            String worldName = config.getString(key + ".world");
-
-            if (worldName == null) {
-                Bukkit.getLogger().warning("World name is missing for area: " + name);
-                continue;
-            }
-
-            World world = Bukkit.getWorld(worldName);
-            if (world == null) {
-                Bukkit.getLogger().warning("World " + worldName + " is not found for area " + name);
-                continue;
-            }
-
-            Location location = new Location(world, x, y, z);
+            String world = config.getString(key + ".world");
+            Location location = new Location(Bukkit.getWorld(world), x, y, z);
             areas.put(name, location);
         }
     }
@@ -78,6 +61,6 @@ public class AreaManager {
             config.set(key + ".z", location.getZ());
             config.set(key + ".world", location.getWorld().getName());
         }
-        configManager.saveConfigs();
+        configManager.saveAreasConfig();
     }
 }
