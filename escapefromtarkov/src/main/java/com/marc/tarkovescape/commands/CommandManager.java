@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CommandManager implements CommandExecutor {
-
+    
     private final TarkovEscape plugin;
 
     public CommandManager(TarkovEscape plugin) {
@@ -17,31 +17,37 @@ public class CommandManager implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 0) {
-            sender.sendMessage("Gebruik /tarkov help voor een lijst met commando's.");
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("Dit commando kan alleen door een speler worden uitgevoerd.");
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("help")) {
-            showHelp(sender);
-        } else if (args[0].equalsIgnoreCase("loot")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
+        Player player = (Player) sender;
+
+        if (args.length == 0) {
+            player.sendMessage("Gebruik /tarkov help voor een lijst met commando's.");
+            return true;
+        }
+
+        switch (args[0].toLowerCase()) {
+            case "help":
+                showHelp(player);
+                break;
+            case "loot":
                 // Voeg hier de lootlogica toe
-                sender.sendMessage("Loot command uitgevoerd.");
-            } else {
-                sender.sendMessage("Dit commando kan alleen door een speler worden uitgevoerd.");
-            }
-        } else {
-            sender.sendMessage("Onbekend commando. Gebruik /tarkov help voor een lijst met commando's.");
+                player.sendMessage("Loot commando uitgevoerd.");
+                break;
+            default:
+                player.sendMessage("Onbekend commando. Gebruik /tarkov help voor een lijst met commando's.");
+                break;
         }
         return true;
     }
 
-    private void showHelp(CommandSender sender) {
-        sender.sendMessage("TarkovEscape Commando's:");
-        sender.sendMessage("/tarkov help - Toon deze helpboodschap");
-        sender.sendMessage("/tarkov loot - Voer het loot commando uit");
+    private void showHelp(Player player) {
+        player.sendMessage("TarkovEscape Commando's:");
+        player.sendMessage("/tarkov help - Toon deze helpboodschap");
+        player.sendMessage("/tarkov loot - Voer het loot commando uit");
         // Voeg hier meer commando's toe als nodig
     }
 }

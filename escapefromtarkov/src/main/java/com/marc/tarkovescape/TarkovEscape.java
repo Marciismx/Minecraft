@@ -1,6 +1,6 @@
 package com.marc.tarkovescape;
 
-import com.marc.tarkovescape.commands.LootCommand;
+import com.marc.tarkovescape.commands.CommandManager;
 import com.marc.tarkovescape.data.PlayerDataManager;
 import com.marc.tarkovescape.listeners.LootSysteem;
 import org.bukkit.event.EventHandler;
@@ -20,12 +20,13 @@ public class TarkovEscape extends JavaPlugin {
         lootSysteem = new LootSysteem(this);
         getServer().getPluginManager().registerEvents(lootSysteem, this);
 
+        // Initialize PlayerDataManager
+        playerDataManager = new PlayerDataManager(this);
+
         // Register commands
-        this.getCommand("loot").setExecutor(new LootCommand(this));
-        // Voeg hier andere commands toe zoals je ze implementeert
+        new CommandManager(this);
 
         // Initialize log systeem
-        playerDataManager = new PlayerDataManager(this);
         initializeLogSystem();
     }
 
