@@ -67,7 +67,7 @@ public class PlayerDataManager {
     private void savePlayerDataToFile(Player player) {
         File playerFile = new File(dataFolder, player.getUniqueId().toString() + ".json");
         Map<String, Object> playerData = new HashMap<>();
-        playerData.put("inventory", player.getInventory().getContents());
+        playerData.put("inventory", gson.toJson(player.getInventory().getContents()));
         // Voeg meer spelersgegevens toe die je wilt opslaan
 
         try (FileWriter writer = new FileWriter(playerFile)) {
@@ -80,7 +80,7 @@ public class PlayerDataManager {
     private void savePlayerDataToDatabase(Player player) {
         UUID uuid = player.getUniqueId();
         Map<String, Object> playerData = new HashMap<>();
-        playerData.put("inventory", player.getInventory().getContents());
+        playerData.put("inventory", gson.toJson(player.getInventory().getContents()));
         // Voeg meer spelersgegevens toe die je wilt opslaan
 
         String json = gson.toJson(playerData);
@@ -110,7 +110,7 @@ public class PlayerDataManager {
 
         try (FileReader reader = new FileReader(playerFile)) {
             Map<String, Object> playerData = gson.fromJson(reader, Map.class);
-            ItemStack[] inventory = gson.fromJson(gson.toJson(playerData.get("inventory")), ItemStack[].class);
+            ItemStack[] inventory = gson.fromJson((String) playerData.get("inventory"), ItemStack[].class);
             player.getInventory().setContents(inventory);
             // Laad andere spelersgegevens
         } catch (IOException e) {
@@ -127,7 +127,7 @@ public class PlayerDataManager {
             if (rs.next()) {
                 String json = rs.getString("data");
                 Map<String, Object> playerData = gson.fromJson(json, Map.class);
-                ItemStack[] inventory = gson.fromJson(gson.toJson(playerData.get("inventory")), ItemStack[].class);
+                ItemStack[] inventory = gson.fromJson((String) playerData.get("inventory"), ItemStack[].class);
                 player.getInventory().setContents(inventory);
                 // Laad andere spelersgegevens
             }

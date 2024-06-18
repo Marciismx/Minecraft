@@ -15,7 +15,7 @@ public class TarkovEscape extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        saveDefaultConfig();
+        saveDefaultConfig(); // Zorgt ervoor dat config.yml wordt geladen
         getLogger().info("TarkovEscape is ingeschakeld!");
         lootSysteem = new LootSysteem(this);
         getServer().getPluginManager().registerEvents(lootSysteem, this);
