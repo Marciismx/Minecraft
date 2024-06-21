@@ -4,6 +4,7 @@ import com.marc.tarkovescape.commands.CommandManager;
 import com.marc.tarkovescape.data.PlayerDataManager;
 import com.marc.tarkovescape.listeners.LootSysteem;
 import com.marc.tarkovescape.listeners.PlayerJoinListener;
+import com.marc.tarkovescape.managers.GroupManager;
 import com.marc.tarkovescape.managers.SpawnManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
@@ -20,7 +21,8 @@ public class TarkovEscape extends JavaPlugin {
     private LootSysteem lootSysteem;
     private PlayerDataManager playerDataManager;
     private Connection databaseConnection;
-    private SpawnManager spawnManager;  // Voeg deze regel toe
+    private SpawnManager spawnManager;
+    private GroupManager groupManager;
 
     @Override
     public void onEnable() {
@@ -34,7 +36,10 @@ public class TarkovEscape extends JavaPlugin {
         playerDataManager = new PlayerDataManager(this);
 
         // Initialize SpawnManager
-        spawnManager = new SpawnManager(this);  // Voeg deze regel toe
+        spawnManager = new SpawnManager(this);
+
+        // Initialize GroupManager
+        groupManager = new GroupManager();
 
         // Register commands
         new CommandManager(this);
@@ -46,7 +51,7 @@ public class TarkovEscape extends JavaPlugin {
         setupDatabaseConnection();
 
         // Register PlayerJoinListener
-        getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);  // Voeg deze regel toe
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
     }
 
     @Override
@@ -104,7 +109,11 @@ public class TarkovEscape extends JavaPlugin {
         return lootSysteem;
     }
 
-    public SpawnManager getSpawnManager() {  // Voeg deze methode toe
+    public SpawnManager getSpawnManager() {
         return spawnManager;
+    }
+
+    public GroupManager getGroupManager() {
+        return groupManager;
     }
 }
