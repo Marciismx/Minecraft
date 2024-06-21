@@ -1,5 +1,13 @@
-database:
-  enabled: false
-  url: jdbc:mysql://localhost:3306/minecraft
-  username: root
-  password: password
+name: TarkovEscape
+main: com.marc.tarkovescape.TarkovEscape
+version: 1.0
+author: jouwNaam
+commands:
+  tarkov:
+    description: Basiscommando voor TarkovEscape plugin
+    usage: /tarkov <help|loot>
+    
+loot:
+  diamond_chance: 0.1
+  gold_ingot_chance: 0.2
+  iron_ingot_chance: 0.3

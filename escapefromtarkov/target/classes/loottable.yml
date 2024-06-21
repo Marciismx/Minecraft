@@ -1,0 +1,36 @@
+loottable:
+  normal:
+    - item_name: "Iron Sword"
+      item_material: "IRON_SWORD"
+      drop_chance: 50.0
+    - item_name: "Iron Helmet"
+      item_material: "IRON_HELMET"
+      drop_chance: 50.0
+  rare:
+    - item_name: "Diamond Sword"
+      item_material: "DIAMOND_SWORD"
+      drop_chance: 30.0
+    - item_name: "Diamond Helmet"
+      item_material: "DIAMOND_HELMET"
+      drop_chance: 70.0
+  epic:
+    - item_name: "Netherite Sword"
+      item_material: "NETHERITE_SWORD"
+      drop_chance: 10.0
+    - item_name: "Netherite Helmet"
+      item_material: "NETHERITE_HELMET"
+      drop_chance: 90.0
+  legendary:
+    - item_name: "Enchanted Golden Apple"
+      item_material: "ENCHANTED_GOLDEN_APPLE"
+      drop_chance: 5.0
+    - item_name: "Elytra"
+      item_material: "ELYTRA"
+      drop_chance: 95.0
+  mythic:
+    - item_name: "Dragon Egg"
+      item_material: "DRAGON_EGG"
+      drop_chance: 1.0
+    - item_name: "Beacon"
+      item_material: "BEACON"
+      drop_chance: 99.0

@@ -12,5 +12,20 @@ CREATE TABLE IF NOT EXISTS player_data (
     data TEXT NOT NULL
 );
 
+CREATE TABLE loottable (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    rarity VARCHAR(50),
+    item_name VARCHAR(100),
+    item_material VARCHAR(50),
+    drop_chance DOUBLE
+);
+
+CREATE TABLE lootrolls (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    roll_number INT,
+    min_items INT,
+    max_items INT
+);
+
 -- Geef een succesbericht
 SELECT 'Database en tabel zijn succesvol aangemaakt' AS 'Status';
