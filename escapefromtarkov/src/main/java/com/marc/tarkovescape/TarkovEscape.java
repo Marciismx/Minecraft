@@ -3,6 +3,8 @@ package com.marc.tarkovescape;
 import com.marc.tarkovescape.commands.CommandManager;
 import com.marc.tarkovescape.data.PlayerDataManager;
 import com.marc.tarkovescape.listeners.LootSysteem;
+import com.marc.tarkovescape.listeners.PlayerJoinListener;
+import com.marc.tarkovescape.managers.SpawnManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,16 +20,21 @@ public class TarkovEscape extends JavaPlugin {
     private LootSysteem lootSysteem;
     private PlayerDataManager playerDataManager;
     private Connection databaseConnection;
+    private SpawnManager spawnManager;  // Voeg deze regel toe
 
     @Override
     public void onEnable() {
         saveDefaultConfig(); // Zorgt ervoor dat config.yml wordt geladen
         getLogger().info("TarkovEscape is ingeschakeld!");
+
         lootSysteem = new LootSysteem(this);
         getServer().getPluginManager().registerEvents(lootSysteem, this);
 
         // Initialize PlayerDataManager
         playerDataManager = new PlayerDataManager(this);
+
+        // Initialize SpawnManager
+        spawnManager = new SpawnManager(this);  // Voeg deze regel toe
 
         // Register commands
         new CommandManager(this);
@@ -37,6 +44,9 @@ public class TarkovEscape extends JavaPlugin {
 
         // Setup database connection
         setupDatabaseConnection();
+
+        // Register PlayerJoinListener
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);  // Voeg deze regel toe
     }
 
     @Override
@@ -92,5 +102,9 @@ public class TarkovEscape extends JavaPlugin {
 
     public LootSysteem getLootSysteem() {
         return lootSysteem;
+    }
+
+    public SpawnManager getSpawnManager() {  // Voeg deze methode toe
+        return spawnManager;
     }
 }

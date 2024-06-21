@@ -29,15 +29,15 @@ public class PlayerDataManager {
             dataFolder.mkdirs();
         }
 
-        if (plugin.getConfig().getBoolean("database.enabled")) {
+        if (plugin.getConfig().getString("storage.method").equalsIgnoreCase("database")) {
             setupDatabase();
         }
     }
 
     private void setupDatabase() {
-        String url = plugin.getConfig().getString("database.url");
-        String username = plugin.getConfig().getString("database.username");
-        String password = plugin.getConfig().getString("database.password");
+        String url = plugin.getConfig().getString("storage.database.url");
+        String username = plugin.getConfig().getString("storage.database.username");
+        String password = plugin.getConfig().getString("storage.database.password");
 
         try {
             connection = DriverManager.getConnection(url, username, password);
@@ -51,7 +51,7 @@ public class PlayerDataManager {
 
     public void savePlayerData(Player player) {
         plugin.getLogger().info("Saving player data for " + player.getName());
-        if (plugin.getConfig().getBoolean("database.enabled")) {
+        if (plugin.getConfig().getString("storage.method").equalsIgnoreCase("database")) {
             savePlayerDataToDatabase(player);
         } else {
             savePlayerDataToFile(player);
@@ -94,7 +94,7 @@ public class PlayerDataManager {
 
     public void loadPlayerData(Player player) {
         plugin.getLogger().info("Loading player data for " + player.getName());
-        if (plugin.getConfig().getBoolean("database.enabled")) {
+        if (plugin.getConfig().getString("storage.method").equalsIgnoreCase("database")) {
             loadPlayerDataFromDatabase(player);
         } else {
             loadPlayerDataFromFile(player);

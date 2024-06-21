@@ -58,9 +58,15 @@ public class CommandManager implements CommandExecutor {
 
     private void handleLootCommand(Player player) {
         List<ItemStack> loot = lootTableManager.generateLoot();
-        for (ItemStack item : loot) {
-            player.getInventory().addItem(item);
+        if (loot.isEmpty()) {
+            player.sendMessage("Er is geen loot beschikbaar.");
+            plugin.getLogger().warning("Geen loot gegenereerd voor speler " + player.getName());
+        } else {
+            for (ItemStack item : loot) {
+                player.getInventory().addItem(item);
+            }
+            player.sendMessage("Je hebt loot ontvangen!");
+            plugin.getLogger().info("Loot gegeven aan speler " + player.getName());
         }
-        player.sendMessage("Je hebt loot ontvangen!");
     }
 }

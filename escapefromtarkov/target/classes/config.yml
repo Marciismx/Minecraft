@@ -1,13 +1,31 @@
-name: TarkovEscape
-main: com.marc.tarkovescape.TarkovEscape
-version: 1.0
-author: jouwNaam
-commands:
-  tarkov:
-    description: Basiscommando voor TarkovEscape plugin
-    usage: /tarkov <help|loot>
-    
-loot:
-  diamond_chance: 0.1
-  gold_ingot_chance: 0.2
-  iron_ingot_chance: 0.3
+storage:
+  method: file # Kan 'database' of 'file' zijn
+  database:
+    url: jdbc:mysql://localhost:3306/tarkov_escape_db
+    username: your_database_username
+    password: your_database_password
+
+rarity_chances:
+  normal: 90.0
+  rare: 5.0
+  epic: 3.0
+  legendary: 2.0
+  mythic: 1.0
+
+roll_chances:
+  1: 90.0
+  2: 5.0
+  3: 3.0
+  4: 2.0
+  5: 1.0
+
+
+spawnLocations:
+  - world,100,65,200
+  - world,150,70,250
+  - world,200,75,300
+
+extractionPoints:
+  - world,300,65,400
+  - world,350,70,450
+  - world,400,75,500

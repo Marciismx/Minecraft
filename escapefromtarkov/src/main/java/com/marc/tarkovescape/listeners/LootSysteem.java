@@ -25,7 +25,7 @@ public class LootSysteem implements Listener {
         ItemStack[] drops = player.getInventory().getContents();
 
         for (ItemStack item : drops) {
-            if (item != null && random.nextDouble() < 0.5) {
+            if (item != null && random.nextDouble() < plugin.getConfig().getDouble("lootDropChance")) {
                 event.getDrops().remove(item);
             }
         }
